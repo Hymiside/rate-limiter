@@ -8,14 +8,14 @@ import (
 func (h *Handler) rateLimiterMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ip := r.RemoteAddr
-		if h.limiter.Requests[ip] >= h.limiter.MaxRequests {
+		if h.limiter.requests[ip] >= h.limiter.maxRequests {
 			http.Error(w, "Rate limit exceeded", http.StatusTooManyRequests)
 			return
 		}
-		h.limiter.Requests[ip]++
+		h.limiter.requests[ip]++
 		go func() {
-			time.Sleep(h.limiter.Interval)
-			h.limiter.Requests[ip]--
+			time.Sleep(h.limiter.interval)
+			h.limiter.requests[ip]--
 		}()
 		next.ServeHTTP(w, r)
 	})

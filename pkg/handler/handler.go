@@ -6,9 +6,9 @@ import (
 )
 
 type RateLimiter struct {
-	Interval time.Duration
-	MaxRequests int
-	Requests map[string]int
+	interval time.Duration
+	maxRequests int
+	requests map[string]int
 }
 
 type Handler struct {
@@ -17,9 +17,9 @@ type Handler struct {
 
 func NewHandler() *Handler {
 	return &Handler{limiter: &RateLimiter{
-		Interval: 5 * time.Second,
-		MaxRequests: 10,
-		Requests: make(map[string]int),
+		interval: 5 * time.Second,
+		maxRequests: 10,
+		requests: make(map[string]int),
 	}}
 }
 
